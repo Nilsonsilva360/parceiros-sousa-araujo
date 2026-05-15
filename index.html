@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programa Elite · Sousa Araújo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F4F0;
+  --surface: #FFFFFF;
+  --surface2: #F0EEE9;
+  --border: #E4E1D9;
+  --text: #1A1814;
+  --text2: #6B6760;
+  --text3: #9E9B96;
+  --gold: #C9A84C;
+  --gold-bg: #FBF6EA;
+  --gold-border: #E8D5A0;
+  --zone-diamond: #1A1814;
+  --zone-gold: #C9A84C;
+  --zone-silver: #6B9DC2;
+  --zone-bronze: #C27C4A;
+  --zone-active: #7AB87A;
+  --red: #D94F4F;
+  --green: #4CAF7A;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ─── LOGIN ─── */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--zone-diamond);
+  position: relative;
+  overflow: hidden;
+}
+
+#login-screen::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.12);
+  top: -200px; right: -200px;
+}
+
+#login-screen::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.08);
+  bottom: -150px; left: -100px;
+}
+
+.login-box {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 380px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logo-mark {
+  width: 52px; height: 52px;
+  background: var(--zone-diamond);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: -1px;
+}
+
+.login-logo h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.login-logo p {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.login-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  margin-bottom: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.login-input:focus { border-color: var(--gold); }
+
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--zone-diamond);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+}
+
+.login-btn:hover { opacity: 0.88; }
+
+.login-hint {
+  margin-top: 20px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.7;
+}
+
+.login-hint strong { color: var(--text2); }
+
+/* ─── APP SHELL ─── */
+#app { display: none; min-height: 100vh; }
+
+.topbar {
+  background: var(--zone-diamond);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.topbar-brand span { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 13px; margin-left: 4px; }
+
+.topbar-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.topbar-tab {
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.topbar-tab:hover { color: white; background: rgba(255,255,255,0.08); }
+.topbar-tab.active { color: var(--gold); background: rgba(201,168,76,0.12); }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-toggle {
+  display: flex;
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.view-btn {
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+}
+
+.view-btn.active { background: var(--gold); color: var(--zone-diamond); }
+
+.logout-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: none;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s;
+}
+
+.logout-btn:hover { color: white; border-color: rgba(255,255,255,0.25); }
+
+/* ─── MAIN ─── */
+.main { padding: 28px; max-width: 1200px; margin: 0 auto; }
+
+/* ─── SECTION VISIBILITY ─── */
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+
+/* ─── CARDS GRID ─── */
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+/* ─── STAT CARD ─── */
+.stat-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-sub {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.badge-up { background: #EBF7F1; color: var(--green); }
+.badge-down { background: #FDEAEA; color: var(--red); }
+
+/* ─── PANEL ─── */
+.panel {
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.panel-body { padding: 24px; }
+
+/* ─── ZONE LEGEND ─── */
+.zone-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 24px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.zone-dot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.zone-dot::before {
+  content: '';
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.zone-dot.diamond::before { background: var(--zone-diamond); }
+.zone-dot.gold::before { background: var(--zone-gold); }
+.zone-dot.silver::before { background: var(--zone-silver); }
+.zone-dot.bronze::before { background: var(--zone-bronze); }
+.zone-dot.active::before { background: var(--zone-active); }
+
+/* ─── RANKING TABLE ─── */
+.rank-table { width: 100%; border-collapse: collapse; }
+
+.rank-table th {
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.rank-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.rank-table tr:last-child td { border-bottom: none; }
+
+.rank-table tr:hover td { background: var(--surface2); }
+
+.rank-zone-bar {
+  width: 3px;
+  border-radius: 3px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.rank-pos {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  width: 36px;
+  text-align: center;
+}
+
+.rank-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.rank-type {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.rank-city-pill {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+
+.rank-pts {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+
+.rank-pts span {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text3);
+  text-align: right;
+}
+
+.pts-bar-wrap {
+  width: 80px;
+}
+
+.pts-bar-bg {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pts-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.zone-label-pill {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ─── CITY TABS ─── */
+.city-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.city-tab {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+
+.city-tab:hover { border-color: var(--gold); color: var(--text); }
+.city-tab.active { background: var(--zone-diamond); color: var(--gold); border-color: var(--zone-diamond); }
+
+/* ─── PRIZES ─── */
+.prize-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.prize-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.prize-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+.prize-card.flash {
+  border-color: var(--red);
+}
+
+.prize-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  background: var(--surface2);
+}
+
+.prize-img-placeholder {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface2);
+  gap: 6px;
+  cursor: pointer;
+  border: 2px dashed var(--border);
+  transition: background 0.15s;
+}
+
+.prize-img-placeholder:hover { background: var(--gold-bg); border-color: var(--gold); }
+
+.prize-img-placeholder span { font-size: 28px; }
+.prize-img-placeholder p { font-size: 11px; color: var(--text3); }
+
+.prize-body { padding: 16px; }
+
+.prize-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.prize-desc {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.prize-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prize-pts-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--gold-bg);
+  border: 1px solid var(--gold-border);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.flash-badge {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: var(--red);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.countdown {
+  font-size: 11px;
+  color: var(--red);
+  font-weight: 600;
+}
+
+.prize-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toggle-switch {
+  width: 32px; height: 18px;
+  background: var(--border);
+  border-radius: 9px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-switch.on { background: var(--green); }
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  background: white;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.toggle-switch.on::after { transform: translateX(14px); }
+
+/* ─── ADD PRIZE BTN ─── */
+.add-prize-card {
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  min-height: 200px;
+  transition: all 0.15s;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+}
+
+.add-prize-card:hover { border-color: var(--gold); background: var(--gold-bg); }
+
+.add-prize-card span { font-size: 32px; }
+.add-prize-card p { font-size: 12px; font-weight: 600; color: var(--text2); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border-radius: 16px;
+  width: 480px;
+  max-width: 95vw;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.modal-close {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text2);
+}
+
+.modal-body { padding: 24px; }
+
+.form-group { margin-bottom: 16px; }
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+.form-textarea { resize: vertical; min-height: 80px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  transition: opacity 0.15s;
+}
+
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: var(--zone-diamond); color: var(--gold); }
+.btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+
+/* ─── SECTION HEADER ─── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-title-h {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.section-sub {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* ─── PARTNER VIEW ─── */
+#partner-view { display: none; min-height: 100vh; background: var(--bg); }
+
+.partner-hero {
+  background: var(--zone-diamond);
+  padding: 28px;
+  color: white;
+}
+
+.partner-hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.partner-hero-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.partner-hero-season {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+}
+
+.partner-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.partner-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.partner-avatar {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--zone-diamond);
+}
+
+.partner-info { flex: 1; margin-left: 14px; }
+
+.partner-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: white;
+}
+
+.partner-city {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 2px;
+}
+
+.partner-zone-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.partner-positions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.pos-box {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+
+.pos-number {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.pos-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 4px;
+}
+
+.partner-pts-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.partner-pts-main {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+}
+
+.partner-pts-main span { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.4); margin-left: 4px; }
+
+.partner-next-zone {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  text-align: right;
+}
+
+.partner-next-zone strong { color: var(--gold); }
+
+.partner-progress-bar {
+  margin-top: 10px;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.partner-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 3px;
+}
+
+/* ─── PARTNER METRICS ─── */
+.partner-metrics {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 10px;
+  padding: 20px 28px;
+}
+
+.metric-box {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.metric-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.metric-label {
+  font-size: 10px;
+  color: var(--text3);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.metric-target {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.metric-bar {
+  margin-top: 8px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.metric-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+/* ─── PARTNER SECTIONS ─── */
+.partner-section { padding: 20px 28px; }
+
+.partner-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ─── MINI RANKING ─── */
+.mini-rank-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  transition: border-color 0.15s;
+}
+
+.mini-rank-item.me {
+  border-color: var(--gold);
+  background: var(--gold-bg);
+}
+
+.mini-rank-item:hover { border-color: var(--text3); }
+
+.mini-pos {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  width: 24px;
+  color: var(--text2);
+  text-align: center;
+}
+
+.mini-pos.top1 { color: #C9A84C; }
+.mini-pos.top2 { color: #A8A9AD; }
+.mini-pos.top3 { color: #CD7F32; }
+
+.mini-zone-dot {
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.mini-name { flex: 1; font-size: 13px; font-weight: 600; }
+.mini-pts { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* ─── PRIZE PARTNER CARDS ─── */
+.prize-partner-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+}
+
+.prize-partner-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.prize-partner-card.flash-active { border-color: var(--red); }
+
+.prize-partner-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  background: var(--surface2);
+  position: relative;
+}
+
+.prize-partner-body { padding: 14px; }
+
+.prize-partner-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.prize-partner-desc { font-size: 11px; color: var(--text2); line-height: 1.5; margin-bottom: 10px; }
+
+.prize-partner-progress {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.prize-partner-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 3px;
+}
+
+.prize-partner-pts { font-size: 11px; color: var(--text3); }
+.prize-partner-pts strong { color: var(--gold); font-weight: 700; }
+
+/* ─── MISSIONS ─── */
+.mission-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.mission-icon-box {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  background: var(--surface2);
+}
+
+.mission-content { flex: 1; }
+.mission-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.mission-desc-p { font-size: 11px; color: var(--text2); line-height: 1.5; }
+.mission-reward-tag { margin-top: 6px; font-size: 11px; font-weight: 600; color: var(--gold); }
+
+.mission-check {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.mission-check.done { background: var(--green); border-color: var(--green); color: white; }
+
+/* ─── UTILS ─── */
+.mb16 { margin-bottom: 16px; }
+.mb24 { margin-bottom: 24px; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tab-section.active, #partner-view, #app { animation: fadeIn 0.25s ease; }
+
+@media (max-width: 768px) {
+  .grid-3, .prize-grid { grid-template-columns: 1fr; }
+  .grid-4, .partner-metrics { grid-template-columns: repeat(2,1fr); }
+  .main { padding: 16px; }
+  .partner-metrics { padding: 16px; }
+  .partner-section { padding: 16px; }
+  .partner-hero { padding: 20px; }
+  .topbar-nav { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ LOGIN ══════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark">SA</div>
+      <h2>Programa Elite</h2>
+      <p>Sousa Araújo Construtora · RVP 2026–2027</p>
+    </div>
+    <label class="login-label">Usuário</label>
+    <input class="login-input" type="text" id="login-user" placeholder="seu@email.com" />
+    <label class="login-label">Senha</label>
+    <input class="login-input" type="password" id="login-pass" placeholder="••••••••" />
+    <button class="login-btn" onclick="doLogin()">Entrar no Sistema</button>
+    <div class="login-hint">
+      <strong>Gestor:</strong> gestor@sousaaraujo.com.br / admin123<br>
+      <strong>Assistente:</strong> equipe@sousaaraujo.com.br / equipe123<br>
+      <strong>Parceiro (demo):</strong> ricardo@corretor.com / parceiro123
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ APP — GESTOR ══════════════════════ -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-brand">
+      SA <span>Programa Elite · RVP 2026–2027</span>
+    </div>
+    <div class="topbar-nav">
+      <button class="topbar-tab active" onclick="showTab('dashboard')">Dashboard</button>
+      <button class="topbar-tab" onclick="showTab('ranking')">Ranking</button>
+      <button class="topbar-tab" onclick="showTab('premiacoes')">Premiações</button>
+      <button class="topbar-tab" onclick="showTab('missoes-tab')">Missões</button>
+    </div>
+    <div class="topbar-right">
+      <div class="view-toggle">
+        <button class="view-btn active" onclick="switchView('manager')">Gestor</button>
+        <button class="view-btn" onclick="switchView('partner')">Parceiro</button>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="tab-section active" id="tab-dashboard">
+      <div class="section-header mb24">
+        <div>
+          <div class="section-title-h">Visão Geral · Q2 2026</div>
+          <div class="section-sub">Apuração: Abril – Junho · Atualizado em 08/05/2026</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal()">+ Novo Prêmio</button>
+      </div>
+
+      <div class="grid-4 mb24">
+        <div class="stat-card">
+          <div class="stat-label">Parceiros Ativos</div>
+          <div class="stat-value">87</div>
+          <div class="stat-sub">nas 3 cidades</div>
+          <div class="stat-badge badge-up">↑ +6 vs Q1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Vendas no Trimestre</div>
+          <div class="stat-value">312</div>
+          <div class="stat-sub">unidades</div>
+          <div class="stat-badge badge-up">↑ +18% vs Q1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pastas Enviadas</div>
+          <div class="stat-value">1.840</div>
+          <div class="stat-sub">documentações</div>
+          <div class="stat-badge badge-up">↑ +9%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Prêmios Ativos</div>
+          <div class="stat-value">5</div>
+          <div class="stat-sub">3 fixos · 2 relâmpago</div>
+          <div class="stat-badge badge-up">↑ 2 expirando em breve</div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Top 5 · São José dos Campos</div>
+            <span style="font-size:11px;color:var(--text3)">Q2 2026</span>
+          </div>
+          <table class="rank-table">
+            <tbody id="mini-sjc"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Top 5 · Jacareí</div>
+            <span style="font-size:11px;color:var(--text3)">Q2 2026</span>
+          </div>
+          <table class="rank-table">
+            <tbody id="mini-jac"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Top 5 · Taubaté</div>
+            <span style="font-size:11px;color:var(--text3)">Q2 2026</span>
+          </div>
+          <table class="rank-table">
+            <tbody id="mini-tau"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RANKING ── -->
+    <div class="tab-section" id="tab-ranking">
+      <div class="section-header mb16">
+        <div>
+          <div class="section-title-h">Ranking de Pontos</div>
+          <div class="section-sub">Campeonato corrido · pontos acumulados no trimestre</div>
+        </div>
+      </div>
+
+      <div class="city-tabs mb16">
+        <button class="city-tab active" onclick="showCity('rvp', this)">🏆 Regional RVP</button>
+        <button class="city-tab" onclick="showCity('sjc', this)">São José dos Campos</button>
+        <button class="city-tab" onclick="showCity('jac', this)">Jacareí</button>
+        <button class="city-tab" onclick="showCity('tau', this)">Taubaté</button>
+      </div>
+
+      <div class="panel">
+        <div class="zone-legend">
+          <div class="zone-dot diamond">Zona Diamante · Top 20%</div>
+          <div class="zone-dot gold">Zona Ouro · Top 21–40%</div>
+          <div class="zone-dot silver">Zona Prata · Top 41–60%</div>
+          <div class="zone-dot bronze">Zona Bronze</div>
+          <div class="zone-dot active">Zona Ativa</div>
+        </div>
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th style="width:50px">Pos.</th>
+              <th style="width:8px"></th>
+              <th>Parceiro</th>
+              <th>Cidade</th>
+              <th>Vendas</th>
+              <th>Pastas</th>
+              <th>Corujões</th>
+              <th style="text-align:right">Pontos</th>
+              <th>Progresso</th>
+              <th>Zona</th>
+            </tr>
+          </thead>
+          <tbody id="rank-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PREMIAÇÕES ── -->
+    <div class="tab-section" id="tab-premiacoes">
+      <div class="section-header mb24">
+        <div>
+          <div class="section-title-h">Premiações & Campanhas</div>
+          <div class="section-sub">Gerencie prêmios fixos do trimestre e campanhas relâmpago</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal()">+ Novo Prêmio / Campanha</button>
+      </div>
+
+      <div class="prize-grid" id="prize-grid"></div>
+    </div>
+
+    <!-- ── MISSÕES ── -->
+    <div class="tab-section" id="tab-missoes-tab">
+      <div class="section-header mb24">
+        <div>
+          <div class="section-title-h">Missões Ativas</div>
+          <div class="section-sub">Permanentes e trimestrais · Q2 2026</div>
+        </div>
+        <button class="btn btn-primary">+ Nova Missão</button>
+      </div>
+
+      <div class="grid-2" id="missions-admin"></div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ══════════════════════ VISÃO DO PARCEIRO ══════════════════════ -->
+<div id="partner-view">
+
+  <div class="partner-hero">
+    <div class="partner-hero-top">
+      <div class="partner-hero-brand">SA · Programa Elite</div>
+      <div class="partner-hero-season">Q2 2026 · Abr–Jun</div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-card-top">
+        <div class="partner-avatar">RM</div>
+        <div class="partner-info">
+          <div class="partner-name">Ricardo Mendes</div>
+          <div class="partner-city">📍 São José dos Campos · Corretor Autônomo</div>
+        </div>
+        <div class="partner-zone-badge" style="background:rgba(201,168,76,0.15);color:var(--gold);">💎 Diamante</div>
+      </div>
+
+      <div class="partner-positions">
+        <div class="pos-box">
+          <div class="pos-number">2º</div>
+          <div class="pos-label">Ranking SJC</div>
+        </div>
+        <div class="pos-box">
+          <div class="pos-number">4º</div>
+          <div class="pos-label">Ranking Regional RVP</div>
+        </div>
+      </div>
+
+      <div class="partner-pts-row">
+        <div class="partner-pts-main">7.890 <span>pontos</span></div>
+        <div class="partner-next-zone">
+          Faltam <strong>950 pts</strong><br>para a Zona Diamante Top 3
+        </div>
+      </div>
+      <div class="partner-progress-bar">
+        <div class="partner-progress-fill" style="width:78%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Métricas do Trimestre -->
+  <div class="partner-metrics">
+    <div class="metric-box">
+      <div class="metric-value">14</div>
+      <div class="metric-label">Vendas</div>
+      <div class="metric-target">Meta: 20</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:70%;background:#C9A84C"></div></div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-value">28</div>
+      <div class="metric-label">Pastas</div>
+      <div class="metric-target">Meta: 40</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:70%;background:#6B9DC2"></div></div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-value">5</div>
+      <div class="metric-label">Corujões</div>
+      <div class="metric-target">Meta: 6</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:83%;background:#7AB87A"></div></div>
+    </div>
+    <div class="metric-box">
+      <div class="metric-value">2º</div>
+      <div class="metric-label">Download Mat.</div>
+      <div class="metric-target">200 pts garantidos</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:85%;background:#C9A84C"></div></div>
+    </div>
+  </div>
+
+  <!-- Ranking local + regional -->
+  <div class="partner-section">
+    <div class="partner-section-title">🏆 Seu Ranking · São José dos Campos</div>
+    <div id="partner-mini-rank"></div>
+  </div>
+
+  <!-- Prêmios -->
+  <div class="partner-section">
+    <div class="partner-section-title">🎁 Prêmios & Campanhas Ativas</div>
+    <div class="prize-partner-grid" id="partner-prizes"></div>
+  </div>
+
+  <!-- Missões -->
+  <div class="partner-section">
+    <div class="partner-section-title">⚡ Suas Missões</div>
+    <div id="partner-missions"></div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div style="height:80px"></div>
+  <div style="position:fixed;bottom:0;left:0;right:0;background:var(--zone-diamond);padding:12px 20px;display:flex;justify-content:space-around;z-index:100;">
+    <button style="flex:1;background:none;border:none;color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'Inter',sans-serif;" onclick="switchView('manager')">
+      <span style="font-size:18px">←</span> VOLTAR GESTOR
+    </button>
+    <button style="flex:1;background:rgba(201,168,76,0.12);border:none;color:var(--gold);font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:8px;font-family:'Inter',sans-serif;">
+      <span style="font-size:18px">🏠</span> INÍCIO
+    </button>
+    <button style="flex:1;background:none;border:none;color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'Inter',sans-serif;">
+      <span style="font-size:18px">🏆</span> RANKING
+    </button>
+    <button style="flex:1;background:none;border:none;color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'Inter',sans-serif;">
+      <span style="font-size:18px">🎁</span> PRÊMIOS
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════ MODAL NOVO PRÊMIO ══════════════════════ -->
+<div class="modal-overlay" id="prize-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Novo Prêmio / Campanha</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Título do Prêmio</label>
+        <input class="form-input" type="text" placeholder="ex: iPhone 16 Pro · 1º Lugar Regional" id="f-title" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descrição</label>
+        <textarea class="form-textarea" placeholder="Detalhes do prêmio..." id="f-desc"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tipo</label>
+          <select class="form-select" id="f-type">
+            <option value="fixed">Prêmio Fixo do Trimestre</option>
+            <option value="flash">Campanha Relâmpago ⚡</option>
+            <option value="mission">Prêmio por Missão</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emoji / Ícone</label>
+          <input class="form-input" type="text" placeholder="✈️ 📱 💰 🏆" id="f-emoji" value="🏆" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Pontos Necessários</label>
+          <input class="form-input" type="number" placeholder="ex: 8000" id="f-pts" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Posição no Ranking (ou deixe vazio)</label>
+          <input class="form-input" type="text" placeholder="ex: 1º Lugar" id="f-rank" />
+        </div>
+      </div>
+      <div class="form-row" id="flash-dates" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Data Início</label>
+          <input class="form-input" type="date" id="f-start" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data Fim</label>
+          <input class="form-input" type="date" id="f-end" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="addPrize()">Adicionar Prêmio</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════ DATA ═══════════════════════
+const USERS = {
+  'gestor@sousaaraujo.com.br': { pass: 'admin123', role: 'manager', name: 'Nilson Silva' },
+  'equipe@sousaaraujo.com.br': { pass: 'equipe123', role: 'manager', name: 'Equipe Comercial' },
+  'ricardo@corretor.com': { pass: 'parceiro123', role: 'partner', name: 'Ricardo Mendes' }
+};
+
+const ZONES = ['diamond','gold','silver','bronze','active'];
+const ZONE_LABELS = { diamond:'Diamante', gold:'Ouro', silver:'Prata', bronze:'Bronze', active:'Ativa' };
+const ZONE_COLORS = { diamond:'var(--zone-diamond)', gold:'var(--zone-gold)', silver:'var(--zone-silver)', bronze:'var(--zone-bronze)', active:'var(--zone-active)' };
+const ZONE_TEXT = { diamond:'white', gold:'white', silver:'white', bronze:'white', active:'white' };
+
+const ALL_PARTNERS = [
+  // SJC
+  { name:'Imobiliária Central Vale', type:'Imobiliária', city:'sjc', vendas:22, pastas:48, corujoes:7, pts:9840 },
+  { name:'Ricardo Mendes', type:'Corretor', city:'sjc', vendas:14, pastas:28, corujoes:5, pts:7890 },
+  { name:'Fernanda Oliveira', type:'Corretora', city:'sjc', vendas:11, pastas:22, corujoes:6, pts:5940 },
+  { name:'Imobiliária Horizonte', type:'Imobiliária', city:'sjc', vendas:9, pastas:19, corujoes:4, pts:4870 },
+  { name:'Patrícia Araújo', type:'Corretora', city:'sjc', vendas:7, pastas:14, corujoes:3, pts:3410 },
+  { name:'Marcos Lima', type:'Corretor', city:'sjc', vendas:4, pastas:9, corujoes:2, pts:1980 },
+  { name:'Imobiliária Vale Alto', type:'Imobiliária', city:'sjc', vendas:3, pastas:7, corujoes:1, pts:1240 },
+  // JAC
+  { name:'Imobiliária Lar Nobre', type:'Imobiliária', city:'jac', vendas:18, pastas:38, corujoes:7, pts:8120 },
+  { name:'Carlos Eduardo', type:'Corretor', city:'jac', vendas:13, pastas:26, corujoes:6, pts:6280 },
+  { name:'Ana Paula Melo', type:'Corretora', city:'jac', vendas:9, pastas:18, corujoes:4, pts:4230 },
+  { name:'Imobiliária Jacareí Plus', type:'Imobiliária', city:'jac', vendas:7, pastas:15, corujoes:3, pts:3150 },
+  { name:'João Batista', type:'Corretor', city:'jac', vendas:4, pastas:8, corujoes:2, pts:1820 },
+  // TAU
+  { name:'Imobiliária Taubaté Prime', type:'Imobiliária', city:'tau', vendas:16, pastas:34, corujoes:7, pts:7540 },
+  { name:'Cláudia Ribeiro', type:'Corretora', city:'tau', vendas:11, pastas:23, corujoes:5, pts:5540 },
+  { name:'Roberto Faria', type:'Corretor', city:'tau', vendas:8, pastas:17, corujoes:4, pts:3780 },
+  { name:'Imobiliária Vale Sul', type:'Imobiliária', city:'tau', vendas:6, pastas:12, corujoes:3, pts:2680 },
+  { name:'Juliana Ferreira', type:'Corretora', city:'tau', vendas:3, pastas:6, corujoes:1, pts:1240 },
+];
+
+function getZone(pos, total) {
+  const pct = pos / total;
+  if (pct <= 0.20) return 'diamond';
+  if (pct <= 0.40) return 'gold';
+  if (pct <= 0.60) return 'silver';
+  if (pct <= 0.80) return 'bronze';
+  return 'active';
+}
+
+function sortedByCity(city) {
+  const arr = city === 'rvp' ? [...ALL_PARTNERS] : ALL_PARTNERS.filter(p => p.city === city);
+  return arr.sort((a,b) => b.pts - a.pts);
+}
+
+let prizes = [
+  { id:1, emoji:'✈️', title:'Viagem · 1º Lugar Anual', desc:'Viagem com acompanhante para o 1º lugar absoluto do ranking regional ao final de 2026.', type:'fixed', pts:null, rank:'1º Lugar Anual', active:true, flash:false },
+  { id:2, emoji:'📱', title:'iPhone 16 · 1º Lugar Q2', desc:'Parceiro com maior pontuação na regional ao final do Q2 ganha um iPhone 16.', type:'fixed', pts:10000, rank:'1º Lugar Q2', active:true, flash:false },
+  { id:3, emoji:'💰', title:'PIX R$ 2.000 · Top 3', desc:'Os 3 primeiros de cada cidade recebem PIX direto além da comissão.', type:'fixed', pts:null, rank:'Top 3 por Cidade', active:true, flash:false },
+  { id:4, emoji:'🏔️', title:'RELÂMPAGO · Campos do Jordão', desc:'5 vendas em julho → final de semana em Campos do Jordão com acompanhante. Tudo por conta da Sousa Araújo!', type:'flash', pts:null, rank:'5 vendas em Jul/26', active:true, flash:true, countdown:'23d 14h' },
+  { id:5, emoji:'🎯', title:'RELÂMPAGO · PIX R$ 1.000', desc:'Feche 2 vendas até 16/05 e ganhe PIX de R$ 1.000 na sexta-feira.', type:'flash', pts:null, rank:'2 vendas até 16/mai', active:true, flash:true, countdown:'8d 06h' },
+];
+
+const MISSIONS = [
+  { icon:'🎯', name:'Caçador de Leads', desc:'Envie 10 pastas qualificadas em um único mês.', reward:'+400 pts · Selo "Caçador"', done:false },
+  { icon:'🔥', name:'Ativações Externas', desc:'Faça 2 ações externas de prospecção em um único mês.', reward:'+600 pts · Selo "Vendedor Raíz"', done:false },
+  { icon:'📈', name:'Crescimento Consistente', desc:'Supere sua pontuação em 3 trimestres consecutivos.', reward:'+1.200 pts · Troféu personalizado', done:false },
+  { icon:'🚀', name:'Arranque do Ano (Q1)', desc:'3 vendas em janeiro. Encerrado.', reward:'+1.000 pts', done:true },
+  { icon:'🏃', name:'Sprint de Inverno (Q3)', desc:'5 vendas em julho → Campos do Jordão c/ acompanhante.', reward:'+800 pts + viagem', done:false },
+  { icon:'👑', name:'Corrida ao Trono (Q4)', desc:'Supere seu melhor trimestre anterior no Q4.', reward:'+1.000 pts · Grande Prêmio', done:false },
+];
+
+// ═══════════════════════ LOGIN ═══════════════════════
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const user = USERS[u];
+  if (!user || user.pass !== p) { alert('Usuário ou senha incorretos.'); return; }
+  document.getElementById('login-screen').style.display = 'none';
+  if (user.role === 'partner') {
+    showPartnerView();
+  } else {
+    showManagerView();
+  }
+}
+
+function doLogout() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('partner-view').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ═══════════════════════ VIEWS ═══════════════════════
+function showManagerView() {
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('partner-view').style.display = 'none';
+  renderAll();
+}
+
+function showPartnerView() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('partner-view').style.display = 'block';
+  renderPartnerView();
+}
+
+function switchView(v) {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (v === 'partner') showPartnerView();
+  else showManagerView();
+}
+
+// ═══════════════════════ TABS ═══════════════════════
+function showTab(id) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.topbar-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ═══════════════════════ RENDER ALL ═══════════════════════
+function renderAll() {
+  renderMiniTables();
+  renderRanking('rvp');
+  renderPrizes();
+  renderMissionsAdmin();
+}
+
+// ═══════════════════════ MINI TABLES ═══════════════════════
+function renderMiniTables() {
+  renderMini('mini-sjc', sortedByCity('sjc').slice(0,5), sortedByCity('sjc').length);
+  renderMini('mini-jac', sortedByCity('jac').slice(0,5), sortedByCity('jac').length);
+  renderMini('mini-tau', sortedByCity('tau').slice(0,5), sortedByCity('tau').length);
+}
+
+function renderMini(id, partners, total) {
+  const el = document.getElementById(id);
+  el.innerHTML = partners.map((p, i) => {
+    const zone = getZone(i+1, total);
+    return `<tr>
+      <td style="width:36px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="width:3px;height:32px;border-radius:3px;background:${ZONE_COLORS[zone]}"></div>
+          <span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text2)">${i+1}</span>
+        </div>
+      </td>
+      <td>
+        <div style="font-size:12px;font-weight:600;color:var(--text)">${p.name}</div>
+        <div style="font-size:10px;color:var(--text3)">${p.type}</div>
+      </td>
+      <td style="text-align:right">
+        <span style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700">${p.pts.toLocaleString('pt-BR')}</span>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════ RANKING ═══════════════════════
+function showCity(city, el) {
+  document.querySelectorAll('.city-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderRanking(city);
+}
+
+function renderRanking(city) {
+  const partners = sortedByCity(city);
+  const maxPts = partners[0]?.pts || 1;
+  const body = document.getElementById('rank-body');
+  const cityLabels = { sjc:'SJC', jac:'Jacareí', tau:'Taubaté' };
+
+  body.innerHTML = partners.map((p, i) => {
+    const zone = getZone(i+1, partners.length);
+    const pct = Math.round((p.pts / maxPts) * 100);
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:3px;height:40px;border-radius:3px;background:${ZONE_COLORS[zone]};flex-shrink:0"></div>
+          <span class="rank-pos">${i+1}</span>
+        </div>
+      </td>
+      <td style="width:0;padding:0"></td>
+      <td>
+        <div class="rank-name">${p.name}</div>
+        <div class="rank-type">${p.type}</div>
+      </td>
+      <td><span class="rank-city-pill">${cityLabels[p.city] || p.city}</span></td>
+      <td style="font-weight:600;font-size:13px">${p.vendas}</td>
+      <td style="font-size:13px;color:var(--text2)">${p.pastas}</td>
+      <td style="font-size:13px;color:var(--text2)">${p.corujoes}</td>
+      <td>
+        <div class="rank-pts">${p.pts.toLocaleString('pt-BR')}<span>pontos</span></div>
+      </td>
+      <td>
+        <div class="pts-bar-wrap">
+          <div class="pts-bar-bg">
+            <div class="pts-bar-fill" style="width:${pct}%;background:${ZONE_COLORS[zone]}"></div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <span class="zone-label-pill" style="background:${ZONE_COLORS[zone]};color:${ZONE_TEXT[zone]}">${ZONE_LABELS[zone]}</span>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════ PRIZES ═══════════════════════
+function renderPrizes() {
+  const grid = document.getElementById('prize-grid');
+  grid.innerHTML = prizes.map(p => `
+    <div class="prize-card ${p.flash ? 'flash' : ''}">
+      ${p.flash ? `<div class="flash-badge">⚡ RELÂMPAGO <span class="countdown">${p.countdown}</span></div>` : ''}
+      <div class="prize-img" style="font-size:56px">${p.emoji}</div>
+      <div class="prize-body">
+        <div class="prize-title">${p.title}</div>
+        <div class="prize-desc">${p.desc}</div>
+        <div class="prize-meta">
+          <div class="prize-pts-badge">🎯 ${p.rank || p.pts?.toLocaleString('pt-BR') + ' pts'}</div>
+          <div class="prize-toggle">
+            <span style="font-size:10px;color:var(--text3)">${p.active ? 'Ativo' : 'Inativo'}</span>
+            <div class="toggle-switch ${p.active ? 'on' : ''}" onclick="togglePrize(${p.id})"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="add-prize-card" onclick="openModal()">
+      <span>＋</span>
+      <p>Nova Premiação ou Campanha Relâmpago</p>
+    </div>`;
+}
+
+function togglePrize(id) {
+  const p = prizes.find(x => x.id === id);
+  if (p) { p.active = !p.active; renderPrizes(); }
+}
+
+// ═══════════════════════ MISSIONS ADMIN ═══════════════════════
+function renderMissionsAdmin() {
+  const el = document.getElementById('missions-admin');
+  el.innerHTML = MISSIONS.map(m => `
+    <div class="panel">
+      <div class="panel-body" style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:44px;height:44px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${m.icon}</div>
+        <div style="flex:1">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px">${m.name}</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px">${m.desc}</div>
+          <div style="font-size:11px;font-weight:600;color:var(--gold)">${m.reward}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:10px;color:var(--text3)">${m.done ? 'Encerrada' : 'Ativa'}</span>
+          <div class="toggle-switch ${m.done ? '' : 'on'}"></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════ PARTNER VIEW ═══════════════════════
+function renderPartnerView() {
+  // Mini ranking SJC para o parceiro
+  const sjcPartners = sortedByCity('sjc');
+  const total = sjcPartners.length;
+  const myIdx = sjcPartners.findIndex(p => p.name === 'Ricardo Mendes');
+  
+  // Show context: partners around me
+  let slice = [];
+  for (let i = Math.max(0, myIdx-2); i <= Math.min(total-1, myIdx+2); i++) {
+    slice.push({ ...sjcPartners[i], rank: i+1 });
+  }
+
+  const miniEl = document.getElementById('partner-mini-rank');
+  miniEl.innerHTML = slice.map(p => {
+    const isMe = p.name === 'Ricardo Mendes';
+    const zone = getZone(p.rank, total);
+    return `<div class="mini-rank-item ${isMe ? 'me' : ''}">
+      <div class="mini-pos ${p.rank===1?'top1':p.rank===2?'top2':p.rank===3?'top3':''}">${p.rank}º</div>
+      <div class="mini-zone-dot" style="background:${ZONE_COLORS[zone]}"></div>
+      <div class="mini-name">${p.name} ${isMe ? '<span style="font-size:10px;color:var(--gold);font-weight:700"> ← você</span>' : ''}</div>
+      <div class="mini-pts">${p.pts.toLocaleString('pt-BR')} pts</div>
+    </div>`;
+  }).join('');
+
+  // Partner prizes
+  const partnerPrizesEl = document.getElementById('partner-prizes');
+  const myPts = 7890;
+  partnerPrizesEl.innerHTML = prizes.filter(p => p.active).slice(0,4).map(p => {
+    const ptsNeeded = p.pts || 10000;
+    const pct = Math.min(100, Math.round((myPts / ptsNeeded) * 100));
+    return `<div class="prize-partner-card ${p.flash ? 'flash-active' : ''}">
+      ${p.flash ? `<div class="flash-badge" style="top:10px;left:10px;position:absolute;background:var(--red);color:white;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;">⚡ ${p.countdown}</div>` : ''}
+      <div class="prize-partner-img" style="position:relative">${p.emoji}</div>
+      <div class="prize-partner-body">
+        <div class="prize-partner-title">${p.title}</div>
+        <div class="prize-partner-desc">${p.desc}</div>
+        <div class="prize-partner-progress">
+          <div class="prize-partner-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="prize-partner-pts">Seus pontos: <strong>${myPts.toLocaleString('pt-BR')}</strong> · Meta: <strong>${p.rank || ptsNeeded.toLocaleString('pt-BR') + ' pts'}</strong></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Partner missions
+  const missionsEl = document.getElementById('partner-missions');
+  missionsEl.innerHTML = MISSIONS.map(m => `
+    <div class="mission-item">
+      <div class="mission-icon-box">${m.icon}</div>
+      <div class="mission-content">
+        <div class="mission-name">${m.name}</div>
+        <div class="mission-desc-p">${m.desc}</div>
+        <div class="mission-reward-tag">${m.reward}</div>
+      </div>
+      <div class="mission-check ${m.done ? 'done' : ''}">${m.done ? '✓' : ''}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════ MODAL ═══════════════════════
+function openModal() {
+  document.getElementById('prize-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('prize-modal').classList.remove('open');
+}
+
+document.getElementById('f-type')?.addEventListener('change', function() {
+  document.getElementById('flash-dates').style.display = this.value === 'flash' ? 'grid' : 'none';
+});
+
+function addPrize() {
+  const title = document.getElementById('f-title').value;
+  const desc = document.getElementById('f-desc').value;
+  const emoji = document.getElementById('f-emoji').value || '🏆';
+  const type = document.getElementById('f-type').value;
+  const pts = parseInt(document.getElementById('f-pts').value) || null;
+  const rank = document.getElementById('f-rank').value;
+
+  if (!title) { alert('Informe o título do prêmio.'); return; }
+
+  prizes.unshift({
+    id: Date.now(),
+    emoji, title, desc, type, pts, rank,
+    active: true,
+    flash: type === 'flash',
+    countdown: type === 'flash' ? '30d 00h' : null
+  });
+
+  renderPrizes();
+  closeModal();
+  showTab('premiacoes');
+  document.querySelectorAll('.topbar-tab').forEach((t,i) => { if(i===2) t.classList.add('active'); else t.classList.remove('active'); });
+}
+
+// ═══════════════════════ INIT ═══════════════════════
+document.addEventListener('keydown', e => { if(e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin(); });
+</script>
+</body>
+</html>
